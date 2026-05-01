@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fuliza Boost — Increase Your M-Pesa Fuliza Limit</title>
+  <meta name="description" content="Increase your Safaricom Fuliza overdraft limit instantly. Official M-Pesa partner service. Fast, secure, trusted by 10,000+ Kenyans."/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:     #00a550;
+      --green-d:   #007a3c;
+      --green-l:   #e8f7ef;
+      --green-m:   #c8edd9;
+      --gold:      #d97706;
+      --gold-l:    #fef3c7;
+      --gold-b:    #fde68a;
+      --wa:        #25D366;
+      --bg:        #f5f6f8;
+      --white:     #ffffff;
+      --text:      #111827;
+      --text2:     #374151;
+      --muted:     #6b7280;
+      --border:    #e5e7eb;
+      --shadow:    0 1px 12px rgba(0,0,0,0.07);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+      --radius:    16px;
+      --font:      'Plus Jakarta Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    .page { display: none; min-height: 100vh; flex-direction: column; }
+    .page.active { display: flex; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--green);
+      color: #fff;
+      padding: 0 20px;
+      height: 56px;
+      display: flex; align-items: center; gap: 14px;
+      position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 1px 8px rgba(0,120,60,0.35);
+    }
+    .topbar-back {
+      background: rgba(255,255,255,0.18); border: none; color: #fff;
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1rem; transition: background 0.2s;
+    }
+    .topbar-back:hover { background: rgba(255,255,255,0.3); }
+    .topbar-title { font-weight: 700; font-size: 1rem; flex: 1; }
+    .topbar-brand { display: flex; align-items: center; gap: 8px; }
+    .topbar-brand-name { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.2px; }
+    .mpesa-badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .mpesa-dot { width: 6px; height: 6px; background: #a8f5cc; border-radius: 50%; }
+
+    /* ── HERO ── */
+    #page-landing { background: var(--white); }
+    .landing-hero {
+      background: linear-gradient(150deg, #00b85a 0%, #006b34 100%);
+      padding: 32px 24px 48px;
+      color: #fff; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .landing-hero::before {
+      content: ''; position: absolute;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      top: -80px; right: -70px; pointer-events: none;
+    }
+    .hero-partner-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 5px 14px; border-radius: 100px;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.2px; margin-bottom: 16px;
+    }
+    .partner-dot { width: 6px; height: 6px; background: #a8f5cc; border-radius: 50%; }
+    .hero-logo { font-size: 2rem; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 6px; }
+    .hero-logo span { color: #a8f5cc; }
+    .hero-tagline { font-size: 0.9rem; opacity: 0.85; margin-bottom: 26px; line-height: 1.6; }
+    .hero-card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 18px; padding: 20px 18px;
+      max-width: 290px; margin: 0 auto 28px; text-align: left;
+    }
+    .hero-card-label { font-size: 0.72rem; opacity: 0.7; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .hero-card-amount { font-size: 2rem; font-weight: 800; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
+    .hero-card-sub { font-size: 0.75rem; opacity: 0.75; margin-bottom: 12px; }
+    .bar-wrap { background: rgba(255,255,255,0.18); border-radius: 100px; height: 7px; overflow: hidden; margin-bottom: 5px; }
+    .bar-fill { height: 100%; width: 8%; background: #a8f5cc; border-radius: 100px; transition: width 1.8s cubic-bezier(.4,0,.2,1); }
+    .bar-fill.boosted { width: 100%; }
+    .bar-labels { display: flex; justify-content: space-between; font-size: 0.68rem; opacity: 0.7; }
+    .hero-btn {
+      background: #fff; color: var(--green);
+      border: none; padding: 15px 40px; border-radius: 100px;
+      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%; max-width: 320px;
+    }
+    .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+
+    /* ── CONTENT ── */
+    .section { padding: 28px 22px; }
+    .sec-title { font-size: 1rem; font-weight: 800; margin-bottom: 16px; color: var(--text); }
+
+    /* HOW IT WORKS */
+    .steps { display: flex; flex-direction: column; gap: 14px; }
+    .step { display: flex; gap: 14px; align-items: flex-start; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--green-l); color: var(--green);
+      font-weight: 800; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-body h4 { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; color: var(--text); }
+    .step-body p { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+
+    /* TRUST */
+    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .trust-card {
+      background: var(--green-l);
+      border-radius: 12px; padding: 16px 12px; text-align: center;
+    }
+    .trust-card h4 { font-size: 0.8rem; font-weight: 700; color: var(--green-d); margin-bottom: 2px; }
+    .trust-card p { font-size: 0.7rem; color: var(--muted); }
+
+    /* PRICING TABLE */
+    .price-table { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+    .price-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 18px; border-bottom: 1px solid var(--border);
+      background: var(--white); cursor: pointer;
+      transition: background 0.15s; position: relative;
+    }
+    .price-row:last-child { border-bottom: none; }
+    .price-row:hover { background: var(--green-l); }
+    .price-row.is-popular { background: #fffbf0; }
+    .price-row.is-popular:hover { background: #fef3c7; }
+    .pop-label {
+      position: absolute; top: 0; right: 72px;
+      background: var(--gold); color: #fff;
+      font-size: 0.62rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 0 0 7px 7px;
+    }
+    .pr-limit-wrap .pr-limit { font-weight: 700; font-size: 0.97rem; color: var(--green); }
+    .pr-limit-wrap .pr-sub { font-size: 0.7rem; color: var(--muted); margin-top: 1px; }
+    .pr-fee-tag {
+      background: var(--gold-l); border: 1px solid var(--gold-b);
+      padding: 4px 12px; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 700; color: var(--gold); white-space: nowrap;
+    }
+
+    /* STICKY CTA */
+    .sticky-cta { padding: 16px 22px; background: var(--white); border-top: 1px solid var(--border); position: sticky; bottom: 0; z-index: 40; }
+    .btn-primary {
+      background: var(--green); color: #fff; border: none;
+      padding: 15px; border-radius: 100px;
+      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; width: 100%;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--green-d); transform: translateY(-1px); }
+    .btn-primary:disabled { background: #d1d5db; transform: none; cursor: not-allowed; }
+
+    /* ── SELECT PAGE ── */
+    #page-select { background: var(--bg); }
+    .page-intro { padding: 18px 22px 4px; }
+    .page-intro h2 { font-size: 0.97rem; font-weight: 700; }
+    .page-intro p { font-size: 0.8rem; color: var(--muted); margin-top: 3px; }
+    .pkg-list { padding: 12px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .pkg-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 16px 18px; box-shadow: var(--shadow);
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative;
+    }
+    .pkg-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .pkg-card.selected { border-color: var(--green); box-shadow: 0 2px 16px rgba(0,165,80,0.18); }
+    .pkg-card .pop-tag {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: #fff;
+      font-size: 0.65rem; font-weight: 700;
+      padding: 2px 12px; border-radius: 100px; white-space: nowrap;
+    }
+    .pkg-left .pkg-limit { font-size: 1.25rem; font-weight: 800; color: var(--green); letter-spacing: -0.5px; line-height: 1; }
+    .pkg-left .pkg-sub { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    .pkg-right { display: flex; align-items: center; gap: 10px; }
+    .pkg-fee {
+      background: var(--gold-l); border: 1px solid var(--gold-b);
+      padding: 5px 12px; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 700; color: var(--gold);
+    }
+    .pkg-radio {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid var(--border); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .pkg-card.selected .pkg-radio { border-color: var(--green); background: var(--green); }
+    .pkg-card.selected .pkg-radio::after { content: ''; width: 7px; height: 7px; background: #fff; border-radius: 50%; display: block; }
+    .select-footer { padding: 14px 22px; background: var(--white); border-top: 1px solid var(--border); }
+    .sel-summary { text-align: center; font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; min-height: 18px; }
+    .sel-summary strong { color: var(--green); }
+
+    /* ── CHECKOUT PAGE ── */
+    #page-checkout { background: var(--bg); }
+    .checkout-wrap { padding: 16px 22px; flex: 1; }
+
+    .mpesa-header {
+      background: var(--white); border-radius: var(--radius);
+      padding: 14px 18px; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: var(--shadow);
+    }
+    .mpesa-logo {
+      width: 42px; height: 42px; background: var(--green);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 0.95rem; letter-spacing: -0.5px; flex-shrink: 0;
+    }
+    .mpesa-info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+    .mpesa-info p { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+
+    .summary-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 14px; }
+    .summary-head { background: var(--green); color: #fff; padding: 11px 18px; font-weight: 700; font-size: 0.85rem; }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 18px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .s-label { color: var(--muted); }
+    .summary-row .s-value { font-weight: 700; }
+    .summary-row .s-value.green { color: var(--green); }
+    .summary-row .s-value.gold { color: var(--gold); font-size: 1rem; }
+
+    .field-card { background: var(--white); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
+    .field-card h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 12px; }
+    .phone-field {
+      display: flex; align-items: center;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 10px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .phone-field:focus-within { border-color: var(--green); }
+    .phone-prefix {
+      padding: 13px 14px; font-weight: 700; font-size: 0.88rem;
+      color: var(--green); background: var(--green-l);
+      border-right: 1.5px solid var(--green-m); white-space: nowrap;
+    }
+    .phone-field input {
+      flex: 1; border: none; background: transparent;
+      padding: 13px 13px; font-family: var(--font);
+      font-size: 0.97rem; font-weight: 600; color: var(--text);
+      outline: none; letter-spacing: 1px;
+    }
+    .field-hint { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+
+    .pay-btn {
+      background: var(--green); color: #fff; border: none;
+      padding: 15px; border-radius: 100px;
+      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; width: 100%; margin-bottom: 10px;
+      box-shadow: 0 3px 16px rgba(0,165,80,0.28);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .pay-btn:hover { background: var(--green-d); transform: translateY(-1px); }
+    .pay-btn:disabled { background: #d1d5db; box-shadow: none; transform: none; cursor: not-allowed; }
+    .terms { font-size: 0.7rem; color: var(--muted); text-align: center; line-height: 1.5; }
+
+    /* ── VERIFY PAGE ── */
+    #page-verify { background: var(--bg); }
+    .verify-wrap { padding: 28px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; }
+    .verify-check {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--green-l); border: 2px solid var(--green-m);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      animation: popIn 0.5s cubic-bezier(.4,0,.2,1);
+    }
+    .verify-check svg { width: 32px; height: 32px; }
+    @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+    .verify-title { font-size: 1.3rem; font-weight: 800; color: var(--green); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .verify-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; max-width: 280px; margin: 0 auto 22px; }
+
+    .order-recap {
+      background: var(--white); border-radius: var(--radius);
+      border: 1.5px solid var(--green-m); padding: 18px;
+      width: 100%; max-width: 340px; margin-bottom: 18px; text-align: left;
+    }
+    .recap-title { font-size: 0.78rem; font-weight: 700; color: var(--green-d); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .recap-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .recap-row:last-child { border-bottom: none; }
+    .recap-row .rk { color: var(--muted); }
+    .recap-row .rv { font-weight: 700; color: var(--text); }
+
+    .next-steps-box {
+      background: var(--gold-l); border: 1px solid var(--gold-b);
+      border-radius: 13px; padding: 16px 18px;
+      width: 100%; max-width: 340px; text-align: left; margin-bottom: 20px;
+    }
+    .next-steps-box h4 { font-size: 0.8rem; font-weight: 700; color: var(--gold); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .ns-step { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 8px; }
+    .ns-step:last-child { margin-bottom: 0; }
+    .ns-n {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--gold); color: #fff;
+      font-size: 0.65rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+    }
+    .ns-t { font-size: 0.8rem; color: var(--text2); line-height: 1.5; }
+
+    .wa-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--wa); color: #fff; text-decoration: none;
+      padding: 15px 20px; border-radius: 100px;
+      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
+      width: 100%; max-width: 340px; margin-bottom: 12px;
+      box-shadow: 0 3px 14px rgba(37,211,102,0.28);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .wa-btn:hover { background: #20c05a; transform: translateY(-1px); }
+    .wa-icon { width: 22px; height: 22px; fill: #fff; }
+
+    .btn-ghost {
+      background: transparent; color: var(--green);
+      border: 1.5px solid var(--green); padding: 13px;
+      border-radius: 100px; font-family: var(--font);
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      width: 100%; max-width: 340px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { background: var(--green); color: #fff; }
+
+    /* ── OVERLAY ── */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; }
+    .overlay.active { display: flex; }
+    .overlay-card { background: #fff; border-radius: 20px; padding: 32px 24px; text-align: center; max-width: 280px; width: 90%; }
+    .spinner { width: 46px; height: 46px; border: 4px solid var(--green-m); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .overlay-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .overlay-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+    .ol-steps { text-align: left; }
+    .ol-step { display: flex; gap: 8px; align-items: center; font-size: 0.75rem; color: var(--muted); padding: 3px 0; }
+    .ol-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.3s; }
+    .ol-step.done .ol-dot { background: var(--green); }
+    .ol-step.running .ol-dot { background: var(--gold); animation: blink 0.6s ease-in-out infinite alternate; }
+    @keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
+
+    /* ── ERROR TOAST ── */
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #1f2937; color: #fff;
+      padding: 10px 20px; border-radius: 100px;
+      font-size: 0.82rem; font-weight: 500;
+      opacity: 0; transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none; z-index: 300; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d1f14; color: #9ca3af;
+      padding: 36px 22px 24px; font-size: 0.8rem; line-height: 1.7;
+    }
+    .footer-brand { margin-bottom: 6px; }
+    .footer-brand-name { font-size: 1.15rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+    .footer-brand-name span { color: #a8f5cc; }
+    .footer-tagline { font-size: 0.76rem; color: #6b7280; margin-bottom: 24px; line-height: 1.5; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; margin-bottom: 24px; }
+    .footer-col h5 { font-size: 0.7rem; font-weight: 700; color: #a8f5cc; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .footer-col a, .footer-col span { display: block; color: #9ca3af; font-size: 0.78rem; text-decoration: none; margin-bottom: 6px; transition: color 0.2s; }
+    .footer-col a:hover { color: #a8f5cc; }
+    .ussd-box {
+      background: rgba(168,245,204,0.1); border: 1px solid rgba(168,245,204,0.18);
+      border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; display: inline-block;
+    }
+    .ussd-num { font-size: 1rem; font-weight: 800; color: #a8f5cc; letter-spacing: 1px; }
+    .ussd-sub { font-size: 0.68rem; color: #6b7280; }
+    .footer-hr { height: 1px; background: rgba(255,255,255,0.07); margin: 18px 0 14px; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .footer-copy { font-size: 0.68rem; color: #4b5563; }
+    .footer-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .footer-chip {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      padding: 3px 8px; border-radius: 5px; font-size: 0.63rem; color: #6b7280; font-weight: 600;
+    }
+    .mpesa-footer-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(0,165,80,0.15); border: 1px solid rgba(0,165,80,0.25);
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 0.68rem; font-weight: 700; color: #4ade80;
+    }
+
+    .fade-up { animation: fadeUp 0.4s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (min-width: 480px) {
+      .pkg-list, .checkout-wrap, .verify-wrap { max-width: 440px; margin-left: auto; margin-right: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     LANDING
+════════════════════════════════ -->
+<div id="page-landing" class="page active">
+
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-brand-name">Fuliza Boost</div>
+    </div>
+    <div style="margin-left:auto">
+      <div class="mpesa-badge"><div class="mpesa-dot"></div>M-Pesa</div>
+    </div>
+  </nav>
+
+  <div class="landing-hero">
+    <div class="hero-partner-tag">
+      <div class="partner-dot"></div>
+      Official M-Pesa Fuliza Partner Service
+    </div>
+    <div class="hero-logo">Fuliza <span>Boost</span></div>
+    <p class="hero-tagline">Increase your Fuliza overdraft limit instantly.<br/>One-time fee. No subscriptions.</p>
+    <div class="hero-card">
+      <div class="hero-card-label">Your Fuliza Limit</div>
+      <div class="hero-card-amount" id="mockAmount">KES 1,000</div>
+      <div class="hero-card-sub" id="mockSub">Current limit</div>
+      <div class="bar-wrap"><div class="bar-fill" id="barFill"></div></div>
+      <div class="bar-labels"><span>KES 0</span><span id="barMax">KES 1,000</span></div>
+    </div>
+    <button class="hero-btn" onclick="goTo('page-select')">Boost My Limit Now</button>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <div class="sec-title">How It Works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Choose Your Target Limit</h4>
+          <p>Select the Fuliza limit that fits your financial needs from our packages below.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Pay via M-Pesa STK Push</h4>
+          <p>Enter your M-Pesa number. An STK Push prompt will appear on your phone to confirm payment.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Get Boosted via WhatsApp</h4>
+          <p>After payment is confirmed, you are connected to our admin on WhatsApp to process your limit increase within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY TRUST US -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-title">Why Trust Us</div>
+    <div class="trust-grid">
+      <div class="trust-card"><h4>100% Secure</h4><p>Payments via official M-Pesa only</p></div>
+      <div class="trust-card"><h4>Fast Processing</h4><p>Limit updated within 24 hours</p></div>
+      <div class="trust-card"><h4>24/7 Support</h4><p>WhatsApp support available</p></div>
+      <div class="trust-card"><h4>10,000+ Users</h4><p>Trusted across Kenya</p></div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-title">Available Packages</div>
+    <div class="price-table">
+      <div class="price-row" onclick="goToSelect(1000)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 1,000</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 70</div>
+      </div>
+      <div class="price-row" onclick="goToSelect(3000)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 3,000</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 130</div>
+      </div>
+      <div class="price-row" onclick="goToSelect(5000)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 5,000</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 250</div>
+      </div>
+      <div class="price-row is-popular" onclick="goToSelect(7500)">
+        <div class="pop-label">Most Popular</div>
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 7,500</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 375</div>
+      </div>
+      <div class="price-row" onclick="goToSelect(10000)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 10,000</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 500</div>
+      </div>
+      <div class="price-row" onclick="goToSelect(15000)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 15,000</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 900</div>
+      </div>
+      <div class="price-row" onclick="goToSelect(20000)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 20,000</div><div class="pr-sub">Target Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 1,300</div>
+      </div>
+      <div class="price-row" onclick="goToSelect(24999)">
+        <div class="pr-limit-wrap"><div class="pr-limit">KES 24,999</div><div class="pr-sub">Maximum Limit</div></div>
+        <div class="pr-fee-tag">Fee: KES 1,500</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:72px"></div>
+
+  <div class="sticky-cta">
+    <button class="btn-primary" onclick="goTo('page-select')">Get Started — Choose Your Limit</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <div class="footer-brand-name">Fuliza <span>Boost</span></div>
+    </div>
+    <div class="mpesa-footer-badge" style="margin-bottom:10px;">
+      <div style="width:6px;height:6px;background:#4ade80;border-radius:50%;"></div>
+      M-Pesa Partner Service
+    </div>
+    <p class="footer-tagline">An authorised Safaricom M-Pesa partner service helping Kenyans access and increase their Fuliza overdraft limits — fast, secure, and reliable.</p>
+
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h5>Contact Us</h5>
+        <a href="https://wa.me/254112989105" target="_blank">WhatsApp Support</a>
+        <a href="https://t.me/+g5C43TCc9gc5ZTdk" target="_blank">Telegram Channel</a>
+        <a href="mailto:zuri@support@fulizaboost.co.ke">support@fulizaboost.co.ke</a>
+        <span>Nairobi, Kenya</span>
+      </div>
+      <div class="footer-col">
+        <h5>Safaricom Care</h5>
+        <div class="ussd-box">
+          <div class="ussd-num">*234#</div>
+          <div class="ussd-sub">Fuliza USSD Code</div>
+        </div>
+        <a href="tel:234">234 — Customer Care</a>
+        <a href="tel:0722000000">0722 000 000</a>
+        <a href="mailto:customercare@safaricom.co.ke">customercare@safaricom.co.ke</a>
+      </div>
+      <div class="footer-col">
+        <h5>Safaricom Offices</h5>
+        <span>HQ: Waiyaki Way, Westlands</span>
+        <span>Mombasa: Nkrumah Rd, Tudor</span>
+        <span>Kisumu: Oginga Odinga St</span>
+        <span>Nakuru: Kenyatta Ave</span>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <span>Subject to Safaricom eligibility terms</span>
+        <span>Fees are non-refundable once processed</span>
+        <span>Service available to M-Pesa users only</span>
+        <a href="https://www.safaricom.co.ke" target="_blank">safaricom.co.ke</a>
+      </div>
+    </div>
+
+    <div class="footer-hr"></div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Fuliza Boost · Not affiliated with Safaricom PLC</div>
+      <div class="footer-chips">
+        <span class="footer-chip">SSL Secure</span>
+        <span class="footer-chip">Kenya</span>
+        <span class="footer-chip">M-Pesa</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════
+     SELECT LIMIT
+════════════════════════════════ -->
+<div id="page-select" class="page">
+  <nav class="topbar">
+    <button class="topbar-back" onclick="goTo('page-landing')">&#8592;</button>
+    <div class="topbar-title">Select Your Limit</div>
+    <div class="mpesa-badge"><div class="mpesa-dot"></div>M-Pesa</div>
+  </nav>
+  <div class="page-intro">
+    <h2>Choose your new Fuliza limit</h2>
+    <p>One-time fee — no subscriptions, no hidden charges</p>
+  </div>
+  <div class="pkg-list" id="pkgList"></div>
+  <div class="select-footer">
+    <div class="sel-summary" id="selSummary">Select a package to continue</div>
+    <button class="btn-primary" id="continueBtn" disabled onclick="goToCheckout()">Continue to Payment</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CHECKOUT
+════════════════════════════════ -->
+<div id="page-checkout" class="page">
+  <nav class="topbar">
+    <button class="topbar-back" onclick="goTo('page-select')">&#8592;</button>
+    <div class="topbar-title">Complete Payment</div>
+    <div class="mpesa-badge"><div class="mpesa-dot"></div>M-Pesa</div>
+  </nav>
+  <div class="checkout-wrap">
+
+    <div class="mpesa-header">
+      <div class="mpesa-logo">M-Pesa</div>
+      <div class="mpesa-info">
+        <h4>Pay via M-Pesa STK Push</h4>
+        <p>A payment prompt will be sent to your phone</p>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-head">Order Summary</div>
+      <div class="summary-row"><span class="s-label">Service</span><span class="s-value">Fuliza Limit Boost</span></div>
+      <div class="summary-row"><span class="s-label">New Limit</span><span class="s-value green" id="coLimit">—</span></div>
+      <div class="summary-row"><span class="s-label">One-Time Fee</span><span class="s-value gold" id="coFee">—</span></div>
+    </div>
+
+    <div class="field-card">
+      <h3>M-Pesa Phone Number</h3>
+      <div class="phone-field">
+        <div class="phone-prefix">+254</div>
+        <input type="tel" id="phoneInput" placeholder="7XX XXX XXX" maxlength="9" oninput="onPhoneInput()" inputmode="numeric"/>
+      </div>
+      <div class="field-hint">Enter the number linked to your M-Pesa and Fuliza account</div>
+    </div>
+
+    <button class="pay-btn" id="payBtn" disabled onclick="initPayment()">Pay Now — M-Pesa STK Push</button>
+    <p class="terms">By proceeding you agree to our Terms of Service. Limit increase is subject to Safaricom eligibility. Fees are non-refundable once processed.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     SUCCESS / VERIFY
+════════════════════════════════ -->
+<div id="page-verify" class="page">
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-brand-name">Fuliza Boost</div>
+    </div>
+    <div style="margin-left:auto">
+      <div class="mpesa-badge"><div class="mpesa-dot"></div>M-Pesa</div>
+    </div>
+  </nav>
+  <div class="verify-wrap">
+    <div class="verify-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#00a550" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </div>
+    <div class="verify-title">Payment Confirmed!</div>
+    <p class="verify-sub">Your M-Pesa payment has been received and verified. Contact our admin on WhatsApp to complete your limit boost.</p>
+
+    <div class="order-recap">
+      <div class="recap-title">Transaction Summary</div>
+      <div class="recap-row"><span class="rk">Phone</span><span class="rv" id="vPhone">—</span></div>
+      <div class="recap-row"><span class="rk">New Limit</span><span class="rv" id="vLimit">—</span></div>
+      <div class="recap-row"><span class="rk">Fee Paid</span><span class="rv" id="vFee">—</span></div>
+      <div class="recap-row"><span class="rk">Reference</span><span class="rv" id="vRef">—</span></div>
+      <div class="recap-row"><span class="rk">Status</span><span class="rv" style="color:var(--green)">Payment Confirmed</span></div>
+    </div>
+
+    <div class="next-steps-box">
+      <h4>Next Steps</h4>
+      <div class="ns-step"><div class="ns-n">1</div><div class="ns-t">Take a screenshot of your M-Pesa confirmation SMS</div></div>
+      <div class="ns-step"><div class="ns-n">2</div><div class="ns-t">Tap "Contact Admin on WhatsApp" below</div></div>
+      <div class="ns-step"><div class="ns-n">3</div><div class="ns-t">Send the screenshot to our admin</div></div>
+      <div class="ns-step"><div class="ns-n">4</div><div class="ns-t">Your Fuliza limit is boosted within 24 hours</div></div>
+    </div>
+
+    <a id="waBtn" href="#" target="_blank" class="wa-btn">
+      <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Contact Admin on WhatsApp
+    </a>
+
+    <button class="btn-ghost" onclick="startOver()">Back to Home</button>
+    <p style="font-size:0.7rem;color:var(--muted);margin-top:14px;">Need Safaricom help? Call <a href="tel:234" style="color:var(--green);font-weight:700;">234</a></p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PROCESSING OVERLAY
+════════════════════════════════ -->
+<div class="overlay" id="overlay">
+  <div class="overlay-card">
+    <div class="spinner"></div>
+    <h3>Processing Payment</h3>
+    <p>Check your phone for the M-Pesa prompt and enter your PIN to confirm.</p>
+    <div class="ol-steps">
+      <div class="ol-step running" id="ol1"><div class="ol-dot"></div><span>Sending STK Push to your phone...</span></div>
+      <div class="ol-step" id="ol2"><div class="ol-dot"></div><span>Waiting for PIN confirmation...</span></div>
+      <div class="ol-step" id="ol3"><div class="ol-dot"></div><span>Verifying payment...</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ERROR TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── DATA ── */
+  const PACKAGES = [
+    { limit: 1000,  fee: 70,   popular: false },
+    { limit: 3000,  fee: 130,  popular: false },
+    { limit: 5000,  fee: 250,  popular: false },
+    { limit: 7500,  fee: 375,  popular: true  },
+    { limit: 10000, fee: 500,  popular: false },
+    { limit: 15000, fee: 900,  popular: false },
+    { limit: 20000, fee: 1300, popular: false },
+    { limit: 24999, fee: 1500, popular: false },
+  ];
+
+  const WA_NUMBER = '254112989105';
+  let selectedPkg  = null;
+  let pollTimer    = null;
+
+  /* ── NAVIGATION ── */
+  function goTo(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function goToSelect(limitAmount) {
+    goTo('page-select');
+    if (limitAmount) setTimeout(() => selectPkg(limitAmount), 60);
+  }
+
+  /* ── HERO ANIMATION ── */
+  setTimeout(() => {
+    document.getElementById('mockAmount').textContent  = 'KES 24,999';
+    document.getElementById('mockSub').textContent     = 'After Fuliza Boost';
+    document.getElementById('barMax').textContent      = 'KES 24,999';
+    document.getElementById('barFill').classList.add('boosted');
+  }, 1600);
+
+  /* ── BUILD PACKAGE CARDS ── */
+  function buildCards() {
+    const wrap = document.getElementById('pkgList');
+    wrap.innerHTML = '';
+    PACKAGES.forEach(pkg => {
+      const el = document.createElement('div');
+      el.className = 'pkg-card fade-up';
+      el.dataset.limit = pkg.limit;
+      el.innerHTML = `
+        ${pkg.popular ? '<div class="pop-tag">Most Popular</div>' : ''}
+        <div class="pkg-left">
+          <div class="pkg-limit">KES ${pkg.limit.toLocaleString()}</div>
+          <div class="pkg-sub">Target Fuliza Limit</div>
+        </div>
+        <div class="pkg-right">
+          <div class="pkg-fee">KES ${pkg.fee.toLocaleString()}</div>
+          <div class="pkg-radio"></div>
+        </div>
+      `;
+      el.onclick = () => selectPkg(pkg.limit);
+      wrap.appendChild(el);
+    });
+  }
+
+  function selectPkg(limitAmount) {
+    selectedPkg = PACKAGES.find(p => p.limit === limitAmount);
+    document.querySelectorAll('.pkg-card').forEach(c => {
+      c.classList.toggle('selected', parseInt(c.dataset.limit) === limitAmount);
+    });
+    document.getElementById('selSummary').innerHTML =
+      `Selected: <strong>KES ${selectedPkg.limit.toLocaleString()}</strong> &nbsp;·&nbsp; Fee: <strong>KES ${selectedPkg.fee.toLocaleString()}</strong>`;
+    document.getElementById('continueBtn').disabled = false;
+  }
+
+  function goToCheckout() {
+    if (!selectedPkg) return;
+    document.getElementById('coLimit').textContent = `KES ${selectedPkg.limit.toLocaleString()}`;
+    document.getElementById('coFee').textContent   = `KES ${selectedPkg.fee.toLocaleString()}`;
+    goTo('page-checkout');
+  }
+
+  /* ── PHONE VALIDATION ── */
+  function onPhoneInput() {
+    const v = document.getElementById('phoneInput').value.replace(/\D/g, '');
+    document.getElementById('payBtn').disabled = v.length !== 9;
+  }
+
+  /* ── TOAST ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  /* ── OVERLAY STEPS ── */
+  let olStep = 0;
+  let olInterval = null;
+
+  function startOverlaySteps() {
+    olStep = 0;
+    ['ol1','ol2','ol3'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.remove('done','running');
+    });
+    document.getElementById('ol1').classList.add('running');
+
+    olInterval = setInterval(() => {
+      const ids = ['ol1','ol2','ol3'];
+      if (olStep < ids.length) {
+        document.getElementById(ids[olStep]).classList.remove('running');
+        document.getElementById(ids[olStep]).classList.add('done');
+        olStep++;
+        if (olStep < ids.length) document.getElementById(ids[olStep]).classList.add('running');
+      }
+    }, 5000);
+  }
+
+  function stopOverlay() {
+    clearInterval(olInterval);
+    document.getElementById('overlay').classList.remove('active');
+  }
+
+  /* ── MEGAPAY STK PUSH ── */
+  async function initPayment() {
+    const rawPhone = document.getElementById('phoneInput').value.replace(/\D/g, '');
+    if (rawPhone.length !== 9) return;
+
+    const ref = 'FBK' + Date.now().toString(36).toUpperCase();
+
+    document.getElementById('overlay').classList.add('active');
+    startOverlaySteps();
+
+    try {
+      // Call our Netlify function (keeps API key safe on server)
+      const res = await fetch('/api/stk-push', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: rawPhone,
+          amount: selectedPkg.fee,
+          reference: ref,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        stopOverlay();
+        showToast(data.error || 'Payment initiation failed. Please try again.');
+        return;
+      }
+
+      // Poll for payment confirmation
+      pollPayment(data.checkoutRequestId, rawPhone, ref);
+
+    } catch (err) {
+      stopOverlay();
+      showToast('Network error. Please check your connection and try again.');
+    }
+  }
+
+  /* ── POLL PAYMENT STATUS ── */
+  async function pollPayment(checkoutRequestId, rawPhone, ref) {
+    let attempts = 0;
+    const MAX_ATTEMPTS = 24; // ~2 minutes at 5s intervals
+
+    async function check() {
+      attempts++;
+      try {
+        const res = await fetch('/api/stk-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutRequestId }),
+        });
+        const data = await res.json();
+
+        if (data.paid) {
+          stopOverlay();
+          showSuccessPage(rawPhone, ref);
+          return;
+        }
+
+        if (data.failed) {
+          stopOverlay();
+          showToast('Payment was cancelled or failed. Please try again.');
+          return;
+        }
+
+        if (attempts >= MAX_ATTEMPTS) {
+          stopOverlay();
+          showToast('Payment timeout. If you paid, contact us on WhatsApp.');
+          return;
+        }
+
+        // Keep polling
+        pollTimer = setTimeout(check, 5000);
+
+      } catch {
+        if (attempts >= MAX_ATTEMPTS) {
+          stopOverlay();
+          showToast('Could not verify payment. Contact us on WhatsApp if you were charged.');
+        } else {
+          pollTimer = setTimeout(check, 5000);
+        }
+      }
+    }
+
+    // First check after 8 seconds (give user time to enter PIN)
+    pollTimer = setTimeout(check, 8000);
+  }
+
+  /* ── SUCCESS PAGE ── */
+  function showSuccessPage(rawPhone, ref) {
+    const fullPhone = '+254' + rawPhone;
+
+    document.getElementById('vPhone').textContent = fullPhone;
+    document.getElementById('vLimit').textContent = `KES ${selectedPkg.limit.toLocaleString()}`;
+    document.getElementById('vFee').textContent   = `KES ${selectedPkg.fee.toLocaleString()}`;
+    document.getElementById('vRef').textContent   = ref;
+
+    const msg = encodeURIComponent(
+      `Hello Fuliza Boost Admin,\n\nI have completed my M-Pesa payment and need my Fuliza limit boosted.\n\nPhone: ${fullPhone}\nTarget Limit: KES ${selectedPkg.limit.toLocaleString()}\nFee Paid: KES ${selectedPkg.fee.toLocaleString()}\nReference: ${ref}\n\nPlease process my limit increase. Thank you.`
+    );
+    document.getElementById('waBtn').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+    goTo('page-verify');
+  }
+
+  /* ── RESET ── */
+  function startOver() {
+    clearTimeout(pollTimer);
+    selectedPkg = null;
+    document.getElementById('phoneInput').value = '';
+    document.getElementById('payBtn').disabled = true;
+    document.getElementById('continueBtn').disabled = true;
+    document.getElementById('selSummary').textContent = 'Select a package to continue';
+    buildCards();
+    goTo('page-landing');
+  }
+
+  /* ── INIT ── */
+  buildCards();
+</script>
+</body>
+</html>
