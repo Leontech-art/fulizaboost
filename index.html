@@ -9,714 +9,32 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --green:    #00a550;
-      --green-d:  #007a3c;
-      --green-l:  #e8f7ef;
-      --green-m:  #c8edd9;
-      --gold:     #f5a623;
-      --gold-l:   #fff8ec;
-      --red:      #e53935;
-      --wa:       #25D366;
-      --tg:       #229ED9;
-      --bg:       #f4f6f8;
-      --white:    #ffffff;
-      --text:     #1a1a2e;
-      --muted:    #6b7280;
-      --border:   #e5e7eb;
-      --shadow:   0 2px 16px rgba(0,0,0,0.08);
-      --shadow-lg:0 8px 40px rgba(0,0,0,0.13);
-      --radius:   18px;
-      --font:     'Plus Jakarta Sans', sans-serif;
+      --green:     #00a550;
+      --green-d:   #007a3c;
+      --green-l:   #e8f7ef;
+      --green-m:   #c8edd9;
+      --gold:      #d97706;
+      --gold-l:    #fef3c7;
+      --gold-b:    #fde68a;
+      --wa:        #25D366;
+      --bg:        #f5f6f8;
+      --white:     #ffffff;
+      --text:      #111827;
+      --text2:     #374151;
+      --muted:     #6b7280;
+      --border:    #e5e7eb;
+      --shadow:    0 1px 12px rgba(0,0,0,0.07);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+      --radius:    16px;
+      --font:      'Plus Jakarta Sans', sans-serif;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; -webkit-font-smoothing: antialiased; }
     .page { display: none; min-height: 100vh; flex-direction: column; }
     .page.active { display: flex; }
 
     /* ── TOPBAR ── */
     .topbar {
-      background: var(--green);
-      color: #fff;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 12px rgba(0,165,80,0.3);
-    }
-    .topbar-back {
-      background: rgba(255,255,255,0.2);
-      border: none; color: #fff;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1.1rem;
-      transition: background 0.2s;
-    }
-    .topbar-back:hover { background: rgba(255,255,255,0.35); }
-    .topbar-title { font-weight: 700; font-size: 1.05rem; flex: 1; }
-    .topbar-logo { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.3px; }
-
-    /* ── LANDING HERO ── */
-    #page-landing { background: var(--white); }
-    .landing-hero {
-      background: linear-gradient(155deg, #00c060 0%, #007a3c 100%);
-      padding: 36px 24px 52px;
-      color: #fff; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .landing-hero::before {
-      content: ''; position: absolute;
-      width: 320px; height: 320px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 50%; top: -100px; right: -80px; pointer-events: none;
-    }
-    .landing-hero::after {
-      content: ''; position: absolute;
-      width: 180px; height: 180px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%; bottom: -40px; left: -30px; pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 5px 16px; border-radius: 100px;
-      font-size: 0.77rem; font-weight: 600;
-      letter-spacing: 0.3px; margin-bottom: 18px;
-    }
-    .hero-logo { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-    .hero-logo span { color: #a8f5cc; }
-    .hero-tagline { font-size: 0.92rem; opacity: 0.88; margin-bottom: 28px; line-height: 1.65; }
-    .hero-phone-mock {
-      background: rgba(255,255,255,0.13);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 20px; padding: 22px 20px;
-      max-width: 300px; margin: 0 auto 30px; text-align: left;
-    }
-    .mock-label { font-size: 0.75rem; opacity: 0.72; margin-bottom: 5px; }
-    .mock-amount { font-size: 2.1rem; font-weight: 800; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; transition: all 0.6s; }
-    .mock-sub { font-size: 0.78rem; opacity: 0.78; margin-bottom: 14px; }
-    .mock-bar-wrap { background: rgba(255,255,255,0.2); border-radius: 100px; height: 8px; overflow: hidden; margin-bottom: 6px; }
-    .mock-bar { height: 100%; width: 10%; background: #a8f5cc; border-radius: 100px; transition: width 1.8s cubic-bezier(.4,0,.2,1); }
-    .mock-bar.boosted { width: 100%; }
-    .mock-bar-labels { display: flex; justify-content: space-between; font-size: 0.7rem; opacity: 0.72; }
-    .hero-cta-btn {
-      background: #fff; color: var(--green);
-      border: none; padding: 16px 44px; border-radius: 100px;
-      font-family: var(--font); font-size: 1rem; font-weight: 700;
-      cursor: pointer; box-shadow: 0 6px 28px rgba(0,0,0,0.18);
-      transition: transform 0.2s, box-shadow 0.2s;
-      width: 100%; max-width: 340px;
-    }
-    .hero-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,0.22); }
-
-    /* ── SECTIONS ── */
-    .section { padding: 32px 24px; }
-    .section-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 18px; letter-spacing: -0.3px; }
-    .steps-list { display: flex; flex-direction: column; gap: 15px; }
-    .step-item { display: flex; gap: 15px; align-items: flex-start; }
-    .step-circle {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: var(--green-l); color: var(--green);
-      font-weight: 800; font-size: 1rem;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .step-text h4 { font-weight: 700; font-size: 0.93rem; margin-bottom: 3px; }
-    .step-text p { color: var(--muted); font-size: 0.83rem; line-height: 1.55; }
-
-    /* TRUST GRID */
-    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .trust-card { background: var(--green-l); border-radius: 14px; padding: 18px 14px; text-align: center; }
-    .trust-card .icon { font-size: 1.5rem; margin-bottom: 6px; }
-    .trust-card h4 { font-size: 0.83rem; font-weight: 700; color: var(--green-d); }
-    .trust-card p { font-size: 0.73rem; color: var(--muted); margin-top: 2px; }
-
-    /* PRICING */
-    .pricing-preview { background: var(--bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
-    .pricing-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 15px 20px; border-bottom: 1px solid var(--border);
-      cursor: pointer; transition: background 0.15s; position: relative;
-    }
-    .pricing-row:last-child { border-bottom: none; }
-    .pricing-row:hover { background: var(--green-l); }
-    .pricing-row.popular-row { background: #fffbf0; }
-    .pricing-row.popular-row:hover { background: #fff5d6; }
-    .popular-pill {
-      position: absolute; top: -1px; right: 70px;
-      background: var(--gold); color: #fff;
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3px;
-      padding: 2px 8px; border-radius: 0 0 8px 8px;
-    }
-    .pr-limit { font-weight: 700; font-size: 1rem; color: var(--green); }
-    .pr-label { font-size: 0.73rem; color: var(--muted); }
-    .pr-fee { font-weight: 700; font-size: 0.88rem; color: var(--gold); background: var(--gold-l); padding: 5px 12px; border-radius: 100px; white-space: nowrap; }
-
-    /* BOTTOM CTA */
-    .landing-bottom-cta { padding: 20px 24px; background: var(--white); border-top: 1px solid var(--border); position: sticky; bottom: 0; z-index: 40; }
-    .btn-green {
-      background: var(--green); color: #fff; border: none;
-      padding: 16px; border-radius: 100px;
-      font-family: var(--font); font-size: 1rem; font-weight: 700;
-      cursor: pointer; width: 100%;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-green:hover { background: var(--green-d); transform: translateY(-1px); }
-    .btn-green:disabled { background: #c0c0c0; transform: none; cursor: not-allowed; }
-
-    /* ── SELECT LIMIT ── */
-    #page-select { background: var(--bg); }
-    .select-intro { padding: 22px 20px 6px; text-align: center; }
-    .select-intro h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .select-intro p { font-size: 0.83rem; color: var(--muted); }
-    .limit-cards { padding: 14px 20px; display: flex; flex-direction: column; gap: 13px; flex: 1; }
-    .limit-card {
-      background: var(--white); border-radius: var(--radius);
-      padding: 22px 20px; box-shadow: var(--shadow);
-      border: 2.5px solid transparent;
-      cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      position: relative;
-    }
-    .limit-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-    .limit-card.selected { border-color: var(--green); box-shadow: 0 4px 24px rgba(0,165,80,0.2); }
-    .popular-tag {
-      position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-      background: var(--gold); color: #fff;
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.4px;
-      padding: 3px 14px; border-radius: 100px; white-space: nowrap;
-    }
-    .select-radio {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid var(--border);
-      position: absolute; top: 18px; right: 18px;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .limit-card.selected .select-radio { border-color: var(--green); background: var(--green); }
-    .limit-card.selected .select-radio::after { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; display: block; }
-    .card-inner { display: flex; align-items: center; gap: 16px; padding-right: 28px; }
-    .card-icon { font-size: 1.6rem; flex-shrink: 0; }
-    .card-text { flex: 1; }
-    .limit-amount { font-size: 1.5rem; font-weight: 800; color: var(--green); letter-spacing: -0.5px; line-height: 1; margin-bottom: 2px; }
-    .limit-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
-    .limit-fee-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--gold-l); border: 1px solid #fde09a;
-      padding: 4px 10px; border-radius: 100px;
-      font-size: 0.78rem; font-weight: 700; color: #a06800;
-    }
-    .select-footer { padding: 18px 20px; background: var(--white); border-top: 1px solid var(--border); }
-    .selected-summary { text-align: center; margin-bottom: 12px; font-size: 0.83rem; color: var(--muted); min-height: 20px; }
-    .selected-summary strong { color: var(--green); }
-
-    /* ── CHECKOUT ── */
-    #page-checkout { background: var(--bg); }
-    .checkout-body { padding: 18px 20px; flex: 1; }
-    .mpesa-logo-row {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--green-l); border-radius: 14px;
-      padding: 13px 16px; margin-bottom: 16px;
-    }
-    .mpesa-icon {
-      width: 38px; height: 38px; background: var(--green);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: #fff; font-weight: 800;
-    }
-    .mpesa-text h4 { font-size: 0.85rem; font-weight: 700; color: var(--green-d); }
-    .mpesa-text p { font-size: 0.73rem; color: var(--muted); }
-    .order-summary { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .order-header { background: var(--green); color: #fff; padding: 14px 20px; font-weight: 700; font-size: 0.88rem; }
-    .order-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 20px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
-    .order-row:last-child { border-bottom: none; }
-    .order-row .label { color: var(--muted); }
-    .order-row .value { font-weight: 700; }
-    .order-row .value.green { color: var(--green); }
-    .order-row .value.gold { color: var(--gold); font-size: 1.08rem; }
-    .phone-input-section { background: var(--white); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .phone-input-section h3 { font-size: 0.93rem; font-weight: 700; margin-bottom: 14px; }
-    .input-wrap {
-      display: flex; align-items: center;
-      background: var(--bg); border: 1.5px solid var(--border);
-      border-radius: 12px; overflow: hidden; transition: border-color 0.2s;
-    }
-    .input-wrap:focus-within { border-color: var(--green); }
-    .input-prefix { padding: 14px; font-weight: 700; font-size: 0.93rem; color: var(--green); background: var(--green-l); border-right: 1.5px solid var(--green-m); white-space: nowrap; }
-    .input-wrap input { flex: 1; border: none; background: transparent; padding: 14px; font-family: var(--font); font-size: 1rem; font-weight: 600; color: var(--text); outline: none; letter-spacing: 1px; }
-    .input-hint { font-size: 0.75rem; color: var(--muted); margin-top: 7px; }
-
-    /* PAY BUTTON */
-    .pay-btn-wrap { margin-bottom: 12px; }
-    .btn-pay {
-      background: var(--green); color: #fff; border: none;
-      padding: 17px; border-radius: 100px;
-      font-family: var(--font); font-size: 1rem; font-weight: 700;
-      cursor: pointer; width: 100%;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 4px 20px rgba(0,165,80,0.3);
-    }
-    .btn-pay:hover { background: var(--green-d); transform: translateY(-1px); }
-    .btn-pay:disabled { background: #c0c0c0; box-shadow: none; transform: none; cursor: not-allowed; }
-
-    .terms-note { font-size: 0.73rem; color: var(--muted); text-align: center; line-height: 1.55; margin-bottom: 8px; }
-
-    /* ── VERIFICATION PAGE ── */
-    #page-verify { background: var(--white); align-items: center; justify-content: center; text-align: center; padding: 40px 24px; }
-    .verify-icon {
-      width: 80px; height: 80px; background: #fff8ec;
-      border: 2px solid #fde09a; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; margin: 0 auto 20px;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
-    .verify-title { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
-    .verify-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.65; max-width: 300px; margin: 0 auto 24px; }
-    .verify-steps {
-      background: var(--green-l); border: 1.5px solid var(--green-m);
-      border-radius: 16px; padding: 20px; text-align: left;
-      width: 100%; max-width: 360px; margin-bottom: 28px;
-    }
-    .verify-steps h4 { font-size: 0.85rem; font-weight: 700; color: var(--green-d); margin-bottom: 12px; }
-    .verify-step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; font-size: 0.83rem; }
-    .verify-step-row:last-child { margin-bottom: 0; }
-    .vs-num {
-      width: 22px; height: 22px; background: var(--green); color: #fff;
-      border-radius: 50%; font-size: 0.7rem; font-weight: 800;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .vs-text { color: var(--text); line-height: 1.5; padding-top: 2px; }
-    .contact-btns { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 360px; margin-bottom: 20px; }
-    .btn-wa {
-      background: var(--wa); color: #fff; border: none;
-      padding: 15px 20px; border-radius: 100px;
-      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      text-decoration: none; transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 4px 16px rgba(37,211,102,0.3);
-    }
-    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
-    .btn-tg {
-      background: var(--tg); color: #fff; border: none;
-      padding: 15px 20px; border-radius: 100px;
-      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      text-decoration: none; transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 4px 16px rgba(34,158,217,0.3);
-    }
-    .btn-tg:hover { background: #1a8fc4; transform: translateY(-1px); }
-    .btn-outline-green {
-      background: transparent; color: var(--green);
-      border: 2px solid var(--green); padding: 13px;
-      border-radius: 100px; font-family: var(--font);
-      font-size: 0.9rem; font-weight: 700; cursor: pointer;
-      width: 100%; max-width: 360px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-outline-green:hover { background: var(--green); color: #fff; }
-
-    /* ── OVERLAY ── */
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; align-items: center; justify-content: center; }
-    .overlay.active { display: flex; }
-    .overlay-box { background: #fff; border-radius: 22px; padding: 36px 28px; text-align: center; max-width: 290px; width: 90%; }
-    .spinner { width: 50px; height: 50px; border: 4px solid var(--green-m); border-top-color: var(--green); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 18px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .overlay-box h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 6px; }
-    .overlay-box p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
-    .overlay-steps { text-align: left; margin-top: 14px; }
-    .overlay-step {
-      display: flex; gap: 8px; align-items: center;
-      font-size: 0.78rem; color: var(--muted); padding: 4px 0;
-    }
-    .overlay-step .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.3s; }
-    .overlay-step.done .dot { background: var(--green); }
-    .overlay-step.active-step .dot { background: var(--gold); animation: dotPulse 0.6s ease-in-out infinite alternate; }
-    @keyframes dotPulse { from { opacity: 0.4; } to { opacity: 1; } }
-
-    /* ── WHATSAPP FLOAT ── */
-    .whatsapp-float {
-      position: fixed; bottom: 90px; right: 18px;
-      background: var(--wa); color: #fff; border: none;
-      border-radius: 50px; padding: 11px 18px;
-      font-family: var(--font); font-size: 0.85rem; font-weight: 700;
-      cursor: pointer; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-      display: flex; align-items: center; gap: 7px;
-      text-decoration: none; z-index: 90;
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: floatIn 0.6s 1.2s ease both;
-    }
-    .whatsapp-float:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 28px rgba(37,211,102,0.5); }
-    @keyframes floatIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── FOOTER ── */
-    footer {
-      background: #0f2417;
-      color: #ccc;
-      padding: 40px 24px 28px;
-      font-size: 0.82rem;
-      line-height: 1.7;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      margin-bottom: 28px;
-    }
-    .footer-logo-wrap { grid-column: 1 / -1; }
-    .footer-logo { font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; margin-bottom: 6px; }
-    .footer-logo span { color: #a8f5cc; }
-    .footer-tagline { font-size: 0.78rem; color: #9ca; line-height: 1.5; }
-    .footer-col h5 { font-size: 0.78rem; font-weight: 700; color: #a8f5cc; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
-    .footer-col p, .footer-col a { display: block; color: #aaa; font-size: 0.8rem; text-decoration: none; margin-bottom: 6px; transition: color 0.2s; }
-    .footer-col a:hover { color: #a8f5cc; }
-    .footer-col .icon-row { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 7px; }
-    .footer-col .icon-row span:first-child { flex-shrink: 0; }
-    .footer-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 20px 0 16px; }
-    .footer-bottom { display: flex; justify-content: space-between; al    .topbar {
-      background: var(--green);
-      color: #fff;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 12px rgba(0,165,80,0.3);
-    }
-    .topbar-back {
-      background: rgba(255,255,255,0.2);
-      border: none; color: #fff;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1.1rem;
-      transition: background 0.2s;
-    }
-    .topbar-back:hover { background: rgba(255,255,255,0.35); }
-    .topbar-title { font-weight: 700; font-size: 1.05rem; flex: 1; }
-    .topbar-logo { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.3px; }
-
-    /* ── LANDING HERO ── */
-    #page-landing { background: var(--white); }
-    .landing-hero {
-      background: linear-gradient(155deg, #00c060 0%, #007a3c 100%);
-      padding: 36px 24px 52px;
-      color: #fff; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .landing-hero::before {
-      content: ''; position: absolute;
-      width: 320px; height: 320px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 50%; top: -100px; right: -80px; pointer-events: none;
-    }
-    .landing-hero::after {
-      content: ''; position: absolute;
-      width: 180px; height: 180px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%; bottom: -40px; left: -30px; pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 5px 16px; border-radius: 100px;
-      font-size: 0.77rem; font-weight: 600;
-      letter-spacing: 0.3px; margin-bottom: 18px;
-    }
-    .hero-logo { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-    .hero-logo span { color: #a8f5cc; }
-    .hero-tagline { font-size: 0.92rem; opacity: 0.88; margin-bottom: 28px; line-height: 1.65; }
-    .hero-phone-mock {
-      background: rgba(255,255,255,0.13);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 20px; padding: 22px 20px;
-      max-width: 300px; margin: 0 auto 30px; text-align: left;
-    }
-    .mock-label { font-size: 0.75rem; opacity: 0.72; margin-bottom: 5px; }
-    .mock-amount { font-size: 2.1rem; font-weight: 800; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; transition: all 0.6s; }
-    .mock-sub { font-size: 0.78rem; opacity: 0.78; margin-bottom: 14px; }
-    .mock-bar-wrap { background: rgba(255,255,255,0.2); border-radius: 100px; height: 8px; overflow: hidden; margin-bottom: 6px; }
-    .mock-bar { height: 100%; width: 10%; background: #a8f5cc; border-radius: 100px; transition: width 1.8s cubic-bezier(.4,0,.2,1); }
-    .mock-bar.boosted { width: 100%; }
-    .mock-bar-labels { display: flex; justify-content: space-between; font-size: 0.7rem; opacity: 0.72; }
-    .hero-cta-btn {
-      background: #fff; color: var(--green);
-      border: none; padding: 16px 44px; border-radius: 100px;
-      font-family: var(--font); font-size: 1rem; font-weight: 700;
-      cursor: pointer; box-shadow: 0 6px 28px rgba(0,0,0,0.18);
-      transition: transform 0.2s, box-shadow 0.2s;
-      width: 100%; max-width: 340px;
-    }
-    .hero-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,0.22); }
-
-    /* ── SECTIONS ── */
-    .section { padding: 32px 24px; }
-    .section-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 18px; letter-spacing: -0.3px; }
-    .steps-list { display: flex; flex-direction: column; gap: 15px; }
-    .step-item { display: flex; gap: 15px; align-items: flex-start; }
-    .step-circle {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: var(--green-l); color: var(--green);
-      font-weight: 800; font-size: 1rem;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .step-text h4 { font-weight: 700; font-size: 0.93rem; margin-bottom: 3px; }
-    .step-text p { color: var(--muted); font-size: 0.83rem; line-height: 1.55; }
-
-    /* TRUST GRID */
-    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .trust-card { background: var(--green-l); border-radius: 14px; padding: 18px 14px; text-align: center; }
-    .trust-card .icon { font-size: 1.5rem; margin-bottom: 6px; }
-    .trust-card h4 { font-size: 0.83rem; font-weight: 700; color: var(--green-d); }
-    .trust-card p { font-size: 0.73rem; color: var(--muted); margin-top: 2px; }
-
-    /* PRICING */
-    .pricing-preview { background: var(--bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
-    .pricing-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 15px 20px; border-bottom: 1px solid var(--border);
-      cursor: pointer; transition: background 0.15s; position: relative;
-    }
-    .pricing-row:last-child { border-bottom: none; }
-    .pricing-row:hover { background: var(--green-l); }
-    .pricing-row.popular-row { background: #fffbf0; }
-    .pricing-row.popular-row:hover { background: #fff5d6; }
-    .popular-pill {
-      position: absolute; top: -1px; right: 70px;
-      background: var(--gold); color: #fff;
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3px;
-      padding: 2px 8px; border-radius: 0 0 8px 8px;
-    }
-    .pr-limit { font-weight: 700; font-size: 1rem; color: var(--green); }
-    .pr-label { font-size: 0.73rem; color: var(--muted); }
-    .pr-fee { font-weight: 700; font-size: 0.88rem; color: var(--gold); background: var(--gold-l); padding: 5px 12px; border-radius: 100px; white-space: nowrap; }
-
-    /* BOTTOM CTA */
-    .landing-bottom-cta { padding: 20px 24px; background: var(--white); border-top: 1px solid var(--border); position: sticky; bottom: 0; z-index: 40; }
-    .btn-green {
-      background: var(--green); color: #fff; border: none;
-      padding: 16px; border-radius: 100px;
-      font-family: var(--font); font-size: 1rem; font-weight: 700;
-      cursor: pointer; width: 100%;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-green:hover { background: var(--green-d); transform: translateY(-1px); }
-    .btn-green:disabled { background: #c0c0c0; transform: none; cursor: not-allowed; }
-
-    /* ── SELECT LIMIT ── */
-    #page-select { background: var(--bg); }
-    .select-intro { padding: 22px 20px 6px; text-align: center; }
-    .select-intro h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .select-intro p { font-size: 0.83rem; color: var(--muted); }
-    .limit-cards { padding: 14px 20px; display: flex; flex-direction: column; gap: 13px; flex: 1; }
-    .limit-card {
-      background: var(--white); border-radius: var(--radius);
-      padding: 22px 20px; box-shadow: var(--shadow);
-      border: 2.5px solid transparent;
-      cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      position: relative;
-    }
-    .limit-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-    .limit-card.selected { border-color: var(--green); box-shadow: 0 4px 24px rgba(0,165,80,0.2); }
-    .popular-tag {
-      position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-      background: var(--gold); color: #fff;
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.4px;
-      padding: 3px 14px; border-radius: 100px; white-space: nowrap;
-    }
-    .select-radio {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid var(--border);
-      position: absolute; top: 18px; right: 18px;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .limit-card.selected .select-radio { border-color: var(--green); background: var(--green); }
-    .limit-card.selected .select-radio::after { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; display: block; }
-    .card-inner { display: flex; align-items: center; gap: 16px; padding-right: 28px; }
-    .card-icon { font-size: 1.6rem; flex-shrink: 0; }
-    .card-text { flex: 1; }
-    .limit-amount { font-size: 1.5rem; font-weight: 800; color: var(--green); letter-spacing: -0.5px; line-height: 1; margin-bottom: 2px; }
-    .limit-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
-    .limit-fee-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--gold-l); border: 1px solid #fde09a;
-      padding: 4px 10px; border-radius: 100px;
-      font-size: 0.78rem; font-weight: 700; color: #a06800;
-    }
-    .select-footer { padding: 18px 20px; background: var(--white); border-top: 1px solid var(--border); }
-    .selected-summary { text-align: center; margin-bottom: 12px; font-size: 0.83rem; color: var(--muted); min-height: 20px; }
-    .selected-summary strong { color: var(--green); }
-
-    /* ── CHECKOUT ── */
-    #page-checkout { background: var(--bg); }
-    .checkout-body { padding: 18px 20px; flex: 1; }
-    .mpesa-logo-row {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--green-l); border-radius: 14px;
-      padding: 13px 16px; margin-bottom: 16px;
-    }
-    .mpesa-icon {
-      width: 38px; height: 38px; background: var(--green);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: #fff; font-weight: 800;
-    }
-    .mpesa-text h4 { font-size: 0.85rem; font-weight: 700; color: var(--green-d); }
-    .mpesa-text p { font-size: 0.73rem; color: var(--muted); }
-    .order-summary { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .order-header { background: var(--green); color: #fff; padding: 14px 20px; font-weight: 700; font-size: 0.88rem; }
-    .order-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 20px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
-    .order-row:last-child { border-bottom: none; }
-    .order-row .label { color: var(--muted); }
-    .order-row .value { font-weight: 700; }
-    .order-row .value.green { color: var(--green); }
-    .order-row .value.gold { color: var(--gold); font-size: 1.08rem; }
-    .phone-input-section { background: var(--white); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .phone-input-section h3 { font-size: 0.93rem; font-weight: 700; margin-bottom: 14px; }
-    .input-wrap {
-      display: flex; align-items: center;
-      background: var(--bg); border: 1.5px solid var(--border);
-      border-radius: 12px; overflow: hidden; transition: border-color 0.2s;
-    }
-    .input-wrap:focus-within { border-color: var(--green); }
-    .input-prefix { padding: 14px; font-weight: 700; font-size: 0.93rem; color: var(--green); background: var(--green-l); border-right: 1.5px solid var(--green-m); white-space: nowrap; }
-    .input-wrap input { flex: 1; border: none; background: transparent; padding: 14px; font-family: var(--font); font-size: 1rem; font-weight: 600; color: var(--text); outline: none; letter-spacing: 1px; }
-    .input-hint { font-size: 0.75rem; color: var(--muted); margin-top: 7px; }
-
-    /* PAY BUTTON */
-    .pay-btn-wrap { margin-bottom: 12px; }
-    .btn-pay {
-      background: var(--green); color: #fff; border: none;
-      padding: 17px; border-radius: 100px;
-      font-family: var(--font); font-size: 1rem; font-weight: 700;
-      cursor: pointer; width: 100%;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 4px 20px rgba(0,165,80,0.3);
-    }
-    .btn-pay:hover { background: var(--green-d); transform: translateY(-1px); }
-    .btn-pay:disabled { background: #c0c0c0; box-shadow: none; transform: none; cursor: not-allowed; }
-
-    .terms-note { font-size: 0.73rem; color: var(--muted); text-align: center; line-height: 1.55; margin-bottom: 8px; }
-
-    /* ── VERIFICATION PAGE ── */
-    #page-verify { background: var(--white); align-items: center; justify-content: center; text-align: center; padding: 40px 24px; }
-    .verify-icon {
-      width: 80px; height: 80px; background: #fff8ec;
-      border: 2px solid #fde09a; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; margin: 0 auto 20px;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
-    .verify-title { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
-    .verify-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.65; max-width: 300px; margin: 0 auto 24px; }
-    .verify-steps {
-      background: var(--green-l); border: 1.5px solid var(--green-m);
-      border-radius: 16px; padding: 20px; text-align: left;
-      width: 100%; max-width: 360px; margin-bottom: 28px;
-    }
-    .verify-steps h4 { font-size: 0.85rem; font-weight: 700; color: var(--green-d); margin-bottom: 12px; }
-    .verify-step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; font-size: 0.83rem; }
-    .verify-step-row:last-child { margin-bottom: 0; }
-    .vs-num {
-      width: 22px; height: 22px; background: var(--green); color: #fff;
-      border-radius: 50%; font-size: 0.7rem; font-weight: 800;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .vs-text { color: var(--text); line-height: 1.5; padding-top: 2px; }
-    .contact-btns { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 360px; margin-bottom: 20px; }
-    .btn-wa {
-      background: var(--wa); color: #fff; border: none;
-      padding: 15px 20px; border-radius: 100px;
-      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      text-decoration: none; transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 4px 16px rgba(37,211,102,0.3);
-    }
-    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
-    .btn-tg {
-      background: var(--tg); color: #fff; border: none;
-      padding: 15px 20px; border-radius: 100px;
-      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      text-decoration: none; transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 4px 16px rgba(34,158,217,0.3);
-    }
-    .btn-tg:hover { background: #1a8fc4; transform: translateY(-1px); }
-    .btn-outline-green {
-      background: transparent; color: var(--green);
-      border: 2px solid var(--green); padding: 13px;
-      border-radius: 100px; font-family: var(--font);
-      font-size: 0.9rem; font-weight: 700; cursor: pointer;
-      width: 100%; max-width: 360px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-outline-green:hover { background: var(--green); color: #fff; }
-
-    /* ── OVERLAY ── */
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; align-items: center; justify-content: center; }
-    .overlay.active { display: flex; }
-    .overlay-box { background: #fff; border-radius: 22px; padding: 36px 28px; text-align: center; max-width: 290px; width: 90%; }
-    .spinner { width: 50px; height: 50px; border: 4px solid var(--green-m); border-top-color: var(--green); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 18px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .overlay-box h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 6px; }
-    .overlay-box p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
-    .overlay-steps { text-align: left; margin-top: 14px; }
-    .overlay-step {
-      display: flex; gap: 8px; align-items: center;
-      font-size: 0.78rem; color: var(--muted); padding: 4px 0;
-    }
-    .overlay-step .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.3s; }
-    .overlay-step.done .dot { background: var(--green); }
-    .overlay-step.active-step .dot { background: var(--gold); animation: dotPulse 0.6s ease-in-out infinite alternate; }
-    @keyframes dotPulse { from { opacity: 0.4; } to { opacity: 1; } }
-
-    /* ── WHATSAPP FLOAT ── */
-    .whatsapp-float {
-      position: fixed; bottom: 90px; right: 18px;
-      background: var(--wa); color: #fff; border: none;
-      border-radius: 50px; padding: 11px 18px;
-      font-family: var(--font); font-size: 0.85rem; font-weight: 700;
-      cursor: pointer; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-      display: flex; align-items: center; gap: 7px;
-      text-decoration: none; z-index: 90;
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: floatIn 0.6s 1.2s ease both;
-    }
-    .whatsapp-float:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 28px rgba(37,211,102,0.5); }
-    @keyframes floatIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── FOOTER ── */
-    footer {
-      background: #0f2417;
-      color: #ccc;
-      padding: 40px 24px 28px;
-      font-size: 0.82rem;
-      line-height: 1.7;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      margin-bottom: 28px;
-    }
-    .footer-logo-wrap { grid-column: 1 / -1; }
-    .footer-logo { font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; margin-bottom: 6px; }
-    .footer-logo span { color: #a8f5cc; }
-    .footer-tagline { font-size: 0.78rem; color: #9ca; line-height: 1.5; }
-    .footer-col h5 { font-size: 0.78rem; font-weight: 700; color: #a8f5cc; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
-    .footer-col p, .footer-col a { display: block; color: #aaa; font-size: 0.8rem; text-decoration: none; margin-bottom: 6px; transition: color 0.2s; }
-    .footer-col a:hover { color: #a8f5cc; }
-    .footer-col .icon-row { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 7px; }
-    .footer-col .icon-row span:first-child { flex-shrink: 0; }
-    .footer-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 20px 0 16px; }
-    .footer-bottom { display: flex; justify-content: space-between; al    .topbar {
       background: var(--green);
       color: #fff;
       padding: 0 20px;
@@ -1088,6 +406,41 @@
     .fade-up { animation: fadeUp 0.4s ease both; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 0; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; background: none; border: none;
+      padding: 16px 0; display: flex; justify-content: space-between;
+      align-items: center; gap: 14px; cursor: pointer;
+      font-family: var(--font); font-size: 0.88rem; font-weight: 700;
+      color: var(--text); text-align: left;
+    }
+    .faq-q:hover { color: var(--green); }
+    .faq-icon {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1.5px solid var(--border); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 400; color: var(--muted);
+      transition: transform 0.3s, background 0.2s, border-color 0.2s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--green); border-color: var(--green); color: #fff;
+    }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+      font-size: 0.82rem; color: var(--muted); line-height: 1.75;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 16px; }
+
+    /* ── TERMS ── */
+    .terms-section { margin-bottom: 20px; }
+    .terms-section h3 { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .terms-section p { font-size: 0.8rem; color: var(--muted); line-height: 1.75; }
+
     @media (min-width: 480px) {
       .pkg-list, .checkout-wrap, .verify-wrap { max-width: 440px; margin-left: auto; margin-right: auto; }
     }
@@ -1249,6 +602,8 @@
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
+        <a href="#" onclick="goTo('page-terms');return false;">Terms &amp; Conditions</a>
+        <a href="#" onclick="goTo('page-faq');return false;">FAQ</a>
         <span>Subject to Safaricom eligibility terms</span>
         <span>Fees are non-refundable once processed</span>
         <span>Service available to M-Pesa users only</span>
@@ -1302,8 +657,8 @@
     <div class="mpesa-header">
       <div class="mpesa-logo">M-Pesa</div>
       <div class="mpesa-info">
-        <h4>Pay via M-Pesa STK Push</h4>
-        <p>A payment prompt will be sent to your phone</p>
+        <h4>Complete Your Payment</h4>
+        <p>Enter your M-Pesa number and tap Pay to proceed</p>
       </div>
     </div>
 
@@ -1323,7 +678,7 @@
       <div class="field-hint">Enter the number linked to your M-Pesa and Fuliza account</div>
     </div>
 
-    <button class="pay-btn" id="payBtn" disabled onclick="initPayment()">Pay Now — M-Pesa STK Push</button>
+    <button class="pay-btn" id="payBtn" disabled onclick="initPayment()">Pay Now</button>
     <p class="terms">By proceeding you agree to our Terms of Service. Limit increase is subject to Safaricom eligibility. Fees are non-refundable once processed.</p>
   </div>
 </div>
@@ -1383,11 +738,11 @@
   <div class="overlay-card">
     <div class="spinner"></div>
     <h3>Processing Payment</h3>
-    <p>Check your phone for the M-Pesa prompt and enter your PIN to confirm.</p>
+    <p>Please wait while we confirm your payment.</p>
     <div class="ol-steps">
-      <div class="ol-step running" id="ol1"><div class="ol-dot"></div><span>Sending STK Push to your phone...</span></div>
-      <div class="ol-step" id="ol2"><div class="ol-dot"></div><span>Waiting for PIN confirmation...</span></div>
-      <div class="ol-step" id="ol3"><div class="ol-dot"></div><span>Verifying payment...</span></div>
+      <div class="ol-step running" id="ol1"><div class="ol-dot"></div><span>Initiating payment request...</span></div>
+      <div class="ol-step" id="ol2"><div class="ol-dot"></div><span>Awaiting confirmation...</span></div>
+      <div class="ol-step" id="ol3"><div class="ol-dot"></div><span>Verifying transaction...</span></div>
     </div>
   </div>
 </div>
@@ -1527,7 +882,7 @@
 
     try {
       // Call our Netlify function (keeps API key safe on server)
-      const res = await fetch('/api/stk-push', {
+      const res = await fetch('/.netlify/functions/stk-push', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1562,7 +917,7 @@
     async function check() {
       attempts++;
       try {
-        const res = await fetch('/api/stk-status', {
+        const res = await fetch('/.netlify/functions/stk-status', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ checkoutRequestId }),
@@ -1633,8 +988,198 @@
     goTo('page-landing');
   }
 
+  /* ── FAQ TOGGLE ── */
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
   /* ── INIT ── */
   buildCards();
 </script>
+<!-- ════════════════════════════════
+     FAQ PAGE
+════════════════════════════════ -->
+<div id="page-faq" class="page">
+  <nav class="topbar">
+    <button class="topbar-back" onclick="goTo('page-landing')">&#8592;</button>
+    <div class="topbar-title">Frequently Asked Questions</div>
+    <div class="mpesa-badge"><div class="mpesa-dot"></div>M-Pesa</div>
+  </nav>
+  <div style="padding:20px 22px;flex:1;">
+
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:22px;line-height:1.6;">Find answers to the most common questions about Fuliza Boost and our services below.</p>
+
+    <div class="faq-list" id="faqList">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What is Fuliza Boost?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Fuliza Boost is an authorised M-Pesa partner service that assists eligible Safaricom subscribers in increasing their Fuliza overdraft limit. Through our platform, clients pay a one-time service fee and our team processes the limit increase request on their behalf within 24 hours.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Who is eligible for a Fuliza limit increase?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Eligibility is determined by Safaricom based on your M-Pesa account activity, transaction history, and repayment behaviour on your existing Fuliza facility. Active M-Pesa users with a consistent transaction history generally qualify. Fuliza Boost facilitates the process; however, the final limit decision rests with Safaricom.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How long does it take for my limit to be increased?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Once your payment has been confirmed and our admin has received your M-Pesa confirmation via WhatsApp, your Fuliza limit is typically updated within 24 hours. Processing times may vary depending on Safaricom's system availability.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Is the service fee refundable?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          The service fee is non-refundable once payment has been processed. This fee covers the administrative and processing costs associated with submitting your limit increase request to Safaricom. In the rare event that Safaricom declines the request due to ineligibility, our team will advise you on the next steps available.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Is my payment secure?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Yes. All payments are processed exclusively through the official M-Pesa payment platform operated by Safaricom PLC. Fuliza Boost does not store your M-Pesa PIN or any sensitive payment credentials. Transactions are secured by Safaricom's banking-grade encryption.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What happens after I pay?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          After your payment is confirmed, you will be directed to contact our admin on WhatsApp. You will be required to share your M-Pesa transaction confirmation SMS as proof of payment. Our admin will then process your Fuliza limit increase request and notify you once it has been completed.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I boost my limit more than once?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Yes. You may request a further limit increase at any time by selecting a higher package and completing the standard process. Each request is subject to a new service fee and Safaricom's eligibility assessment at the time of the new request.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How do I contact support?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Our support team is available 24 hours a day, 7 days a week via WhatsApp at +254 112 989 105. You may also reach us via email at zuri@support@fulizaboost.co.ke. For Safaricom-related queries, you may contact Safaricom Customer Care directly by dialling 234 from your Safaricom line.
+        </div>
+      </div>
+
+    </div>
+
+    <div style="height:24px"></div>
+    <button class="btn-primary" onclick="goTo('page-landing')">Back to Home</button>
+    <div style="height:24px"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TERMS & CONDITIONS PAGE
+════════════════════════════════ -->
+<div id="page-terms" class="page">
+  <nav class="topbar">
+    <button class="topbar-back" onclick="goTo('page-landing')">&#8592;</button>
+    <div class="topbar-title">Terms &amp; Conditions</div>
+    <div class="mpesa-badge"><div class="mpesa-dot"></div>M-Pesa</div>
+  </nav>
+  <div style="padding:20px 22px;flex:1;">
+
+    <p style="font-size:0.75rem;color:var(--muted);margin-bottom:18px;">Last updated: January 2025</p>
+
+    <div class="terms-section">
+      <h3>1. Acceptance of Terms</h3>
+      <p>By accessing or using the Fuliza Boost platform, you confirm that you have read, understood, and agree to be bound by these Terms and Conditions. If you do not agree to these terms, you must not use our services.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>2. Description of Service</h3>
+      <p>Fuliza Boost is a third-party facilitation service that assists eligible Safaricom M-Pesa subscribers in submitting requests for an increase to their Fuliza overdraft limit. Fuliza Boost is not affiliated with, endorsed by, or acting as an agent of Safaricom PLC. The granting of any limit increase remains solely at the discretion of Safaricom.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>3. Eligibility</h3>
+      <p>To use Fuliza Boost, you must: (a) be a registered Safaricom M-Pesa subscriber; (b) be at least 18 years of age; (c) be a resident of the Republic of Kenya; and (d) have an active Fuliza facility on your M-Pesa account. Fuliza Boost reserves the right to refuse service to any user at its discretion.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>4. Service Fees</h3>
+      <p>A one-time, non-refundable service fee is charged for each limit increase request. The applicable fee is displayed at the time of selection and is payable exclusively via M-Pesa prior to the submission of any request. The service fee covers administrative and processing costs only and does not guarantee a specific outcome.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>5. Refund Policy</h3>
+      <p>All service fees are strictly non-refundable once payment has been confirmed. By proceeding with payment, you acknowledge and accept that the fee will not be returned regardless of the outcome of the limit increase request. In circumstances where a request cannot be processed due to factors within the control of Fuliza Boost, an alternative remedy may be offered at the company's discretion.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>6. Payment Processing</h3>
+      <p>All payments are processed through the official Safaricom M-Pesa platform. Fuliza Boost does not collect, store, or process your M-Pesa PIN or any banking credentials. You are solely responsible for ensuring the accuracy of the payment details you provide.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>7. Processing Time</h3>
+      <p>Fuliza Boost endeavours to process all approved requests within 24 hours of payment confirmation and receipt of the required M-Pesa confirmation via WhatsApp. Processing times may be extended due to factors beyond our control, including Safaricom system downtime or high demand periods.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>8. Limitation of Liability</h3>
+      <p>Fuliza Boost shall not be held liable for any direct, indirect, incidental, or consequential loss arising from: (a) Safaricom's decision to decline a limit increase request; (b) delays in processing attributable to Safaricom; (c) the suspension or termination of a user's M-Pesa or Fuliza account; or (d) any loss resulting from the user's failure to comply with these Terms.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>9. Privacy</h3>
+      <p>Personal information collected through this platform, including your phone number and transaction reference, is used solely for the purpose of processing your service request. Fuliza Boost does not sell, rent, or share your personal data with third parties, except where required by law or necessary to deliver the service.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>10. Amendments</h3>
+      <p>Fuliza Boost reserves the right to amend these Terms and Conditions at any time without prior notice. Continued use of the platform following any amendment constitutes your acceptance of the revised terms.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>11. Governing Law</h3>
+      <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of the Republic of Kenya. Any disputes arising from the use of this service shall be subject to the exclusive jurisdiction of the Kenyan courts.</p>
+    </div>
+
+    <div class="terms-section">
+      <h3>12. Contact</h3>
+      <p>For any queries relating to these Terms, please contact us via WhatsApp at +254 112 989 105 or by email at zuri@support@fulizaboost.co.ke.</p>
+    </div>
+
+    <div style="height:24px"></div>
+    <button class="btn-primary" onclick="goTo('page-landing')">Back to Home</button>
+    <div style="height:24px"></div>
+  </div>
+</div>
+
 </body>
 </html>
