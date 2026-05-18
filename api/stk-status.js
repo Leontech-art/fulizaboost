@@ -1,16 +1,6 @@
 const https = require('https');
 
-function get(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (r) => {
-      let d = '';
-      r.on('data', c => d += c);
-      r.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve({}); } });
-    }).on('error', reject);
-  });
-}
-
-function post(url, token, body) {
+function post(url, body) {
   return new Promise((resolve, reject) => {
     const b = JSON.stringify(body);
     const u = new URL(url);
@@ -20,7 +10,6 @@ function post(url, token, body) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
         'Content-Length': Buffer.byteLength(b)
       }
     }, (r) => {
@@ -41,36 +30,43 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { checkoutRequestId, merchantRequestId } = req.body || {};
+  const { checkoutRequestId } = req.body || {};
   if (!checkoutRequestId)
     return res.status(400).json({ error: 'Missing checkoutRequestId' });
 
   const KEY    = process.env.UNIFIED_CONSUMER_KEY;
   const SECRET = process.env.UNIFIED_CONSUMER_SECRET;
-  const CODE   = process.env.UNIFIED_SHORTCODE;
 
   try {
-    const auth = await get(`https://unifiedpay.co.ke/auth/cred/${KEY}/${SECRET}/`);
-    const token = auth.access_token || auth.token || auth.accessToken;
-    if (!token) return res.status(200).json({ paid: false, failed: false, status: 'PENDING' });
+    const s = await post(
+      `https://unifiedpay.co.ke/auth/cred/${KEY}/${SECRET}/sendstatus`,
+      { transaction_request_id: checkoutRequestId }
+    );
 
-    const s = await post('https://unifiedpay.co.ke/api/stkquery/', token, {
-      checkout_request_id: checkoutRequestId,
-      merchant_request_id: merchantRequestId || '',
-      shortcode: String(CODE)
+    // From docs: TransactionStatus = "Completed", TransactionCode = "0" = success
+    const paid =
+      s.TransactionStatus === 'Completed' ||
+      s.TransactionCode === '0' ||
+      s.TransactionCode === 0 ||
+      s.ResultCode === '0' ||
+      s.ResultCode === 0;
+
+    const failed =
+      s.ResultCode === 1032 || s.ResultCode === '1032' ||
+      s.ResultCode === 1037 || s.ResultCode === '1037' ||
+      s.TransactionStatus === 'Failed';
+
+    const mpesaRef = s.TransactionReceipt || s.MpesaReceiptNumber || '';
+
+    return res.status(200).json({
+      paid,
+      failed,
+      status: s.TransactionStatus || s.ResultDesc || 'Pending',
+      mpesaRef,
+      raw: s
     });
 
-    const paid   = s.ResultCode === 0 || s.ResultCode === '0' || s.status === 'SUCCESS';
-    const failed = s.ResultCode === 1032 || s.ResultCode === '1032' ||
-                   s.ResultCode === 1037 || s.ResultCode === '1037' ||
-                   s.status === 'FAILED';
-    const mpesaRef = (s.CallbackMetadata && s.CallbackMetadata.Item &&
-      s.CallbackMetadata.Item.find(i => i.Name === 'MpesaReceiptNumber') &&
-      s.CallbackMetadata.Item.find(i => i.Name === 'MpesaReceiptNumber').Value) || '';
-
-    return res.status(200).json({ paid, failed, status: s.ResultDesc || 'PENDING', mpesaRef });
-
   } catch (err) {
-    return res.status(200).json({ paid: false, failed: false, status: 'PENDING' });
+    return res.status(200).json({ paid: false, failed: false, status: 'Pending' });
   }
 };
