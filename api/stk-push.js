@@ -1,16 +1,6 @@
 const https = require('https');
 
-function get(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (r) => {
-      let d = '';
-      r.on('data', c => d += c);
-      r.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve({}); } });
-    }).on('error', reject);
-  });
-}
-
-function post(url, token, body) {
+function post(url, body) {
   return new Promise((resolve, reject) => {
     const b = JSON.stringify(body);
     const u = new URL(url);
@@ -20,7 +10,6 @@ function post(url, token, body) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
         'Content-Length': Buffer.byteLength(b)
       }
     }, (r) => {
@@ -47,37 +36,34 @@ module.exports = async (req, res) => {
 
   const KEY    = process.env.UNIFIED_CONSUMER_KEY;
   const SECRET = process.env.UNIFIED_CONSUMER_SECRET;
-  const CODE   = process.env.UNIFIED_SHORTCODE;
+
+  // Format phone — UnifiedPay accepts both 254XXXXXXXXX and 07XXXXXXXX
+  let msisdn = String(phone).replace(/\D/g, '');
+  if (msisdn.startsWith('0')) msisdn = '254' + msisdn.slice(1);
+  if (!msisdn.startsWith('254')) msisdn = '254' + msisdn;
+
+  // Truncate reference to max 20 chars
+  const ref = String(reference).slice(0, 20);
 
   try {
-    // Get token
-    const auth = await get(`https://unifiedpay.co.ke/auth/cred/${KEY}/${SECRET}/`);
-    const token = auth.access_token || auth.token || auth.accessToken;
-    if (!token) return res.status(200).json({ success: false, error: 'Auth failed', raw: auth });
+    const stk = await post(
+      `https://unifiedpay.co.ke/auth/cred/${KEY}/${SECRET}/sendstk`,
+      {
+        amount: parseInt(amount),
+        msisdn: msisdn,
+        reference: ref,
+        account_number: ref
+      }
+    );
 
-    // Format phone as 07XXXXXXXX
-    let p = String(phone).replace(/\D/g, '');
-    if (p.startsWith('254')) p = '0' + p.slice(3);
-    if (p.startsWith('7') || p.startsWith('1')) p = '0' + p;
-
-    // STK Push
-    const stk = await post('https://unifiedpay.co.ke/api/stkpush/', token, {
-      phone_number: p,
-      amount: String(amount),
-      shortcode: String(CODE),
-      reference: reference,
-      account_number: reference
-    });
-
-    const ok = stk.ResponseCode === '0' || stk.ResponseCode === 0 ||
-               stk.success === true || !!stk.CheckoutRequestID ||
-               stk.status === 'success';
+    const ok = stk.ResponseCode === '0' || stk.success === true;
 
     return res.status(200).json({
       success: ok,
-      checkoutRequestId: stk.CheckoutRequestID || stk.checkout_request_id || reference,
-      merchantRequestId: stk.MerchantRequestID || stk.merchant_request_id || '',
-      error: ok ? null : (stk.message || stk.errorMessage || JSON.stringify(stk)),
+      transaction_request_id: stk.transaction_request_id || '',
+      checkoutRequestId: stk.CheckoutRequestID || stk.transaction_request_id || reference,
+      merchantRequestId: stk.MerchantRequestID || '',
+      error: ok ? null : (stk.errorMessage || stk.message || JSON.stringify(stk)),
       raw: stk
     });
 
